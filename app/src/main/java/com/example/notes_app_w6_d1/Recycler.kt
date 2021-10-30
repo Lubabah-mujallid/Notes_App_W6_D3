@@ -1,22 +1,36 @@
 package com.example.notes_app_w6_d1
 
+import android.annotation.SuppressLint
+import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notes_app_w6_d1.databinding.RecyclerLayoutBinding
 
-class Recycler(): RecyclerView.Adapter<Recycler.ViewHolder>() {
+class Recycler(val activity: MainActivity): RecyclerView.Adapter<Recycler.ViewHolder>() {
     private var messages: ArrayList<Note> = ArrayList()
     class ViewHolder(val binding: RecyclerLayoutBinding): RecyclerView.ViewHolder(binding.root)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(RecyclerLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
+    @SuppressLint("ResourceAsColor")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var message = messages[position]
         holder.binding.apply {
             tvID.text = message.id.toString()
             tvNote.text = message.text
+            edit.setOnClickListener {
+                Log.d("TAG RV", "edit button pressed")
+                //edit.setBackgroundColor(Color.GRAY)
+                activity.alertDialog(true, message)
+            }
+            delete.setOnClickListener {
+                Log.d("TAG RV", "delete button pressed")
+                activity.alertDialog(false, message)
+
+            }
         }
     }
 

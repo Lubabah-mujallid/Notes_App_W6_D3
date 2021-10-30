@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 
 class DataBase( context: Context?) : SQLiteOpenHelper(context, "details.db", null, 2) {
     val sqLiteDatabase = writableDatabase
@@ -37,4 +38,22 @@ class DataBase( context: Context?) : SQLiteOpenHelper(context, "details.db", nul
         }
         return notes
     }
+
+    fun updateData(note: Note, nNote: String): Int {
+        Log.d("TAG DATABASE", "INSIDE UPDATE")
+        val cv = ContentValues()
+        cv.put("Note", nNote)
+        Log.d("TAG DATABASE", "NOTE: $note")
+        Log.d("TAG DATABASE", "NEW NOTE: $nNote")
+        return sqLiteDatabase.update("notes", cv, "id = ${note.id}", null)
+    }
+
+    fun deleteData(note: Note): Int {
+        Log.d("TAG DATABASE", "INSIDE DELETE")
+        Log.d("TAG DATABASE", "NOTE: $note")
+        val cv = ContentValues()
+        cv.put("NoteID", note.id)
+        return sqLiteDatabase.delete("notes","id = ${note.id}", null)
+    }
+
 }
